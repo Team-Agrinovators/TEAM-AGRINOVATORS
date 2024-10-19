@@ -1,6 +1,6 @@
-#include <WiFi.h>
-#include <HTTPClient.h>
-#include "DHT.h"
+#include <WiFi.h> //wifi connectivity
+#include <HTTPClient.h>//htpp request
+#include "DHT.h"//dht sensor  integration
 
 // DHT22 is defined as DHT22 instead of DHT11
 #define DHTPIN 18
@@ -15,9 +15,9 @@ const char* serverName = "http://api.thingspeak.com/update";
 String apiKey = "YCLPO2MU7N1HHEC5";
 
 void setup() {
-  Serial.begin(115200);
-  WiFi.begin(ssid, password);
-  dht.begin();
+  Serial.begin(115200);//start serial commmunication
+  WiFi.begin(ssid, password);//connect to wifi
+  dht.begin();//dht sensor intialization
 
   Serial.println("Connecting");
   while (WiFi.status() != WL_CONNECTED) {
@@ -30,7 +30,7 @@ void setup() {
 }
 
 void loop() {
-  if (WiFi.status() == WL_CONNECTED) {
+  if (WiFi.status() == WL_CONNECTED) {//check connection
     WiFiClient client;
     HTTPClient http;
     delay(10000); // wait for 10 seconds
@@ -56,7 +56,7 @@ void loop() {
     int httpResponseCode = http.POST(httpRequestData);
 
     Serial.print("HTTP Response code: ");
-    Serial.println(httpResponseCode);
+    Serial.println(httpResponseCode);//print response code
 
     http.end();
   } else {
