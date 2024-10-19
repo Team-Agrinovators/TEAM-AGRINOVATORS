@@ -1,10 +1,10 @@
-#include <DHT.h>
-#include <DHT_U.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
-#include <ArduinoJson.h>
-#include <U8g2lib.h>
-#include <Wire.h>
+#include <DHT.h>//library for dht sensor
+#include <DHT_U.h>//additional dht sensor sensor library
+#include <WiFi.h>//library for wifi connectivity
+#include <HTTPClient.h>//library for making http request
+#include <ArduinoJson.h>//library for json data
+#include <U8g2lib.h>//library for oled dispaly
+#include <Wire.h>//i2c integration
 
 // Moisture sensor pin
 const int sensor = 35;
@@ -37,7 +37,7 @@ void setup() {
   Serial.begin(115200); // Initialize Serial communication
   //u8g2.begin();
   dht.begin();
-  WiFi.begin(ssid, password);
+  WiFi.begin(ssid, password);//connect to wifi
 
   Serial.println();
   Serial.print("Connecting to ");
@@ -50,7 +50,7 @@ void setup() {
   Serial.println("");
   Serial.println("WiFi connected");
 
-  digitalWrite(LED, HIGH);
+  digitalWrite(LED, HIGH);//turn on led to show succesfull connection
   delay(1000);
 }
 
@@ -58,12 +58,12 @@ void loop() {
   value = analogRead(sensor);
   float t = dht.readTemperature(); 
   float h = dht.readHumidity();
-  if (isnan(t) || isnan(h)) {
+  if (isnan(t) || isnan(h)) {//check if dht readings are correct
     Serial.println("Failed to read from DHT sensor!");
     return;
   }
 
-  if (WiFi.status() == WL_CONNECTED) {
+  if (WiFi.status() == WL_CONNECTED) {//check wifi connection before sending data to thingspeak
     HTTPClient http;
 
     String url = String(serverThing) + "?api_key=" + apiKeyThing + "&field1=" + String(t) + "&field2=" + String(h) + "&field3=" + String(value);
@@ -157,9 +157,7 @@ void loop() {
   else{
     digitalWrite(pump,LOW);
   }
-  //if(descriptionStr = "Rainy"){
-    //digitalWrite(pump,LOW);
-  //}
+
 }
 
 
