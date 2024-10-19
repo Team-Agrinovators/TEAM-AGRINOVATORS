@@ -1,19 +1,19 @@
-#include <WiFi.h>
-#include <HTTPClient.h>
+#include <WiFi.h>//library for connectivity
+#include <HTTPClient.h>//library for http request
 
 // Moisture sensor pin
-const int sensor = 35;
+const int sensor = 35;// intializing soil moisture
 int value;
 //int pump = ;
 
 // ThingSpeak credentials
-const String apiKey = "S125DDOT56065THT";
+const String apiKey = "S125DDOT56065THT";//thing speak api key
 const char* ssid = "Redmi 9A";
 const char* password = "jaiverma125";
 const char* server = "http://api.thingspeak.com/update";
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(115200);//start serial communication
   delay(10);
   
   pinMode(sensor, INPUT);
@@ -27,7 +27,7 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
   
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) {//check the connection
     delay(500);
     Serial.print(".");
   }
@@ -40,7 +40,7 @@ void loop() {
   value = constrain(value, 0, 1023); // keep the range 0 to 1023
   //value = map(value, 0, 1023, 100, 0); // Optional mapping to 0-100
 
-  if (WiFi.status() == WL_CONNECTED) {
+  if (WiFi.status() == WL_CONNECTED) {//check wifi connection before sending data
     HTTPClient http;
 
     String url = String(server) + "?api_key=" + apiKey + "&field1=" + String(value);
